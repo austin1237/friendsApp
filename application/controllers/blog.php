@@ -46,8 +46,8 @@ class Blog extends CI_Controller {
 
     public function getBio(){
         session_start();
-        $first_name = $_GET['first_name'];
-        $last_name = $_GET['last_name'];
+        $first_name = $_GET['firstName'];
+        $last_name = $_GET['lastName'];
         $fb_config = array(
             'appId'  => '140692572794210',
             'secret' => '9dbcfc38fd50701693dd8603e7bd558c'

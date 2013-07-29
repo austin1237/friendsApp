@@ -11,7 +11,8 @@ $('.btn').on('click', function (e) {
     console.log(button_type);
     switch (button_type) {
     case "Bio":
-        params = '{"first_name":"' + first_name +'", "last_name":"' + last_name + '"}';
+        //params = '{"first_name":"' + first_name +'", "last_name":"' + last_name + '"}';
+        params = {firstName: first_name, lastName: last_name};
         url = "index.php/blog/getbio";
         ajax(url, params);
         break;
@@ -25,6 +26,8 @@ $('.btn').on('click', function (e) {
     }
 
     function ajax(url, params) {
+        params = $.param(params);
+        //url = escape(url);
         console.log(url);
         console.log(params);
         $.ajax({
