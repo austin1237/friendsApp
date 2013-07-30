@@ -60,5 +60,23 @@ class Blog extends CI_Controller {
         $this->Facebook_model->getBio($first_name, $last_name);
     }
 
+    public function getPosts(){
+        session_start();
+        $first_name = $_GET['firstName'];
+        $last_name = $_GET['lastName'];
+        $button_type = $_GET['buttonType'];
+        $fb_config = array(
+            'appId'  => '140692572794210',
+            'secret' => '9dbcfc38fd50701693dd8603e7bd558c'
+        );
+
+        $this->load->library('facebook', $fb_config);
+
+        $this->load->model('Facebook_model');
+        $this->Facebook_model->initalize($this->facebook);
+        $this->Facebook_model->getPosts($first_name, $last_name, $button_type);
+    }
+
 }
 ?>
+

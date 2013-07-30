@@ -45,6 +45,8 @@
 
             }
             echo '<button class = "btn">Daily</button>';
+            echo '<button class = "btn">Weekly</button>';
+            echo '<button class = "btn">Monthly</button>';
             echo '</p>';
             $a += 1;
             echo '</div>'; //end of span 4

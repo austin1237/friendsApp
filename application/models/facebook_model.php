@@ -36,19 +36,17 @@ public $fql_end='&access_token=';
           echo $about_me;   
     }
 
-    function getUID(){
-      if($first_name && $last_name){
-        $fql_query=  'SELECT uid FROM user WHERE first_name = "'. $this->first_name . '" and last_name="'. $this->last_name . '" and uid in (select uid2 from friend where uid1 = me())';
-        $fql_query = urlencode($fql_query);
-        $fql = file_get_contents($this->fql_start.$fql_query.$this->fql_end);
-        $fql = json_decode($fql, true); 
-        $uid= $fql['data'][0][uid];
-        return $uid;
-      }
+    function getUID($first_name, $last_name){
+      $fql_query=  'SELECT uid FROM user WHERE first_name = "'. $first_name . '" and last_name="'. $last_name . '" and uid in (select uid2 from friend where uid1 = me())';
+      $fql_query = urlencode($fql_query);
+      $fql = file_get_contents($this->fql_start.$fql_query.$this->fql_end . $this->facebook->getAccessToken());
+      $fql = json_decode($fql, true); 
+      $uid= $fql['data'][0]['uid'];
+      return $uid;
     } 
 
-    function getPosts($time, $first_name, $last_name){
-      switch ($time){
+    function getPosts($first_name, $last_name, $button_type){
+      switch ($button_type){
         case "Daily":
         $time = strtotime("-1 day");
         break;
@@ -60,15 +58,15 @@ public $fql_end='&access_token=';
         case "Monthly":
         $time = strtotime("-4 week");
         break;
-
-    $fql_query =  'SELECT post_id FROM stream WHERE source_id = ' . getUID . ' AND created_time < ' .$time;
+      }
+    $fql_query =  'SELECT post_id FROM stream WHERE source_id = ' . $this->getUID($first_name, $last_name) . ' AND created_time > ' .$time;
     $fql_query = urlencode($fql_query);
     $fql = file_get_contents($this->fql_start.$fql_query.$this->fql_end . $this->facebook->getAccessToken());
     $fql = json_decode($fql, true); 
-    $about_me = $fql['data'][0]['about_me'];
-    echo $about_me;   
+    $posts = $fql['data'];
+    echo count($posts);   
 
-      }
+      
   }
 }
 ?>

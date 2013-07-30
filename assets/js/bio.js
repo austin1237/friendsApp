@@ -19,14 +19,14 @@ $('.btn').on('click', function (e) {
     case "Daily":
     case "Weekly":
     case "Monthly":
-        params = "{first_name: first_name, last_name: last_name button_type: button_type}";
-        url = index.php / blog / getbio;
+        params = {firstName: first_name, lastName: last_name, buttonType: button_type};
+        url = "index.php/blog/getPosts";
         ajax(url, params);
         break;
     }
 
     function ajax(url, params) {
-        params = $.param(params);
+        params = $.param(params);//converts the array to work with the ajax url call
         //url = escape(url);
         console.log(url);
         console.log(params);
