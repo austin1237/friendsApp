@@ -27,7 +27,6 @@ public $fql_end='&access_token=';
     }
 
     function getBio($first_name, $last_name){
-      echo $first_name . $last_name;
           $fql_query =  'SELECT about_me FROM user WHERE first_name = "'. $first_name . '" and last_name="'. $last_name . '" and uid in (select uid2 from friend where uid1 = me())';
           $fql_query = urlencode($fql_query);
           $fql = file_get_contents($this->fql_start.$fql_query.$this->fql_end . $this->facebook->getAccessToken());

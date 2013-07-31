@@ -36,7 +36,7 @@ $('.btn').on('click', function (e) {
             url: url,
             data: params,
             datatype: 'json',
-            success: function (msg) {
+            success: function (msg) {   
                 $(button).text(msg);
                 button.slideDown("slow");
             }
