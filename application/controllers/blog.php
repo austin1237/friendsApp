@@ -13,7 +13,6 @@ class Blog extends CI_Controller {
         $this->load->model('Facebook_model');
         $this->Facebook_model->initalize($this->facebook);
         $user = $this->Facebook_model->getUser();
-        $data['friends'] = $this->Facebook_model->getFriends(); 
         if ($user) {
             try {
                 $data['user_profile'] = $this->facebook->api('/me');
@@ -25,6 +24,7 @@ class Blog extends CI_Controller {
         if ($user) {
 
             $data['logout_url'] = $this->facebook->getLogoutUrl();
+            $data['friends'] = $this->Facebook_model->getFriends(); 
             $this->load->view('friendsview',$data);
         } else {
 	    	$params = array( 'next' => 'http://localhost/AustinTest/index.php/blog/ajax' );
