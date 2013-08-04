@@ -20,20 +20,23 @@
       <h3>Your Friends</h3>
       <div class="friends">
       <?php
-    //$friends = $facebook->api("/me/friends?fields=first_name,last_name,id,bio");
     for ($a = 0; $a < count($friends) - 1;) {
         echo '<div class="row">';
         for ($i = 1; $i <= 3; $i++) {
+          $first_name = $friends[$a]['first_name'];
+          $last_name =  $friends[$a]['last_name'];
+          $uid = $friends[$a]['uid'];
+          $imageSource = "https://graph.facebook.com/" . $friends[$a]['uid']. "/picture?width=200&height=200";
 ?>
               <div class="span4">
                 <?php
             if ($friends) {
 ?>
               <h3> <?php
-                print $friends[$a]['first_name'] . " " . $friends[$a]['last_name'];
+                print $first_name . " " . $last_name;
 ?></h3>
-              <img src= <?php
-                echo "\"https://graph.facebook.com/" . $friends[$a]['uid']. "/picture?width=200&height=200\">";
+              <img class="profilepic" src= <?php
+                echo $imageSource . ">";
             }
 ?>
                 <?php
@@ -44,9 +47,9 @@
  
 
             }
-            echo '<button class = "btn">Daily</button>';
-            echo '<button class = "btn">Weekly</button>';
-            echo '<button class = "btn">Monthly</button>';
+            $queryString = array('firstName'=> $first_name, 'lastName' => $last_name, 'imageSource' => $imageSource, 'uid' => $uid);
+            $queryString = http_build_query($queryString);
+            echo '<a class="btn" href="index.php/details?' . $queryString . '">Details</a>';
             echo '</p>';
             $a += 1;
             echo '</div>'; //end of span 4
@@ -57,5 +60,5 @@
 </body>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
-<script src= "assets/js/bio.js"; ?>></script>
+<script src= "assets/js/bio.js"></script>
 </html>

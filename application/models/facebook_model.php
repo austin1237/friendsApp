@@ -18,7 +18,7 @@ public $fql_end='&access_token=';
     }
 
     function getFriends(){
-      $fql_query =  'SELECT first_name, last_name, uid, about_me, wall_count FROM user WHERE uid in (select uid2 from friend where uid1 = me())';
+      $fql_query =  'SELECT first_name, last_name, uid, about_me FROM user WHERE uid in (select uid2 from friend where uid1 = me())';
       $fql_query = urlencode($fql_query);
       $friends = file_get_contents($this->fql_start.$fql_query.$this->fql_end . $this->facebook->getAccessToken());
       $friends = json_decode($friends, true);
@@ -67,5 +67,14 @@ public $fql_end='&access_token=';
 
       
   }
+
+  function getStatus($uid){
+      $fql_query =  'SELECT message FROM status WHERE source_id = $uid';
+      $fql_query = urlencode($fql_query);
+      $fql = file_get_contents($this->fql_start.$fql_query.$this->fql_end . $this->facebook->getAccessToken());
+      $fql = json_decode($fql, true); 
+      $status = $fql['data'][0]['message'];
+      echo $status;   
+    }
 }
 ?>

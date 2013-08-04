@@ -27,22 +27,13 @@ class Blog extends CI_Controller {
             $data['friends'] = $this->Facebook_model->getFriends(); 
             $this->load->view('friendsview',$data);
         } else {
-	    	$params = array( 'next' => 'http://localhost/AustinTest/index.php/blog/ajax' );
-	        $data['login_url'] = $this->facebook->getLoginUrl($params);
-	        $this->load->view('facebookview',$data);
+            $permissions = array('scope' => 'read_stream');// gets the right permissions from the user
+	    	//$params = array( 'next' => 'http://localhost/AustinTest/index.php/blog/ajax' );
+	        $data['login_url'] = $this->facebook->getLoginUrl($permissions);
+	        $this->load->view('loginview',$data);
     }
 	}
 
-	public function comments()
-	{
-		echo 'Look at this!';
-	}
-
-	public function ajax()
-	{
-		$this->load->model("Test_model");
-		$this->Test_model->ajax();
-	}
 
     public function getBio(){
         session_start();
