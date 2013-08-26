@@ -1,6 +1,6 @@
 <?php
 class Blog extends CI_Controller {
-
+//been lazy to change this name at some point this needs to happen
 	public function index()
 	{
 		$fb_config = array(
@@ -13,22 +13,24 @@ class Blog extends CI_Controller {
         $this->load->model('Facebook_model');
         $this->Facebook_model->initalize($this->facebook);
         $user = $this->Facebook_model->getUser();
-        if ($user) {
+        
+
+        if ($user) { //if user exists
             try {
                 $data['user_profile'] = $this->facebook->api('/me');
             } catch (FacebookApiException $e) {
-                $user = null;
+                $user = null; //makes user null if no one has loged in yet
             }
         }
 
+        //shows either friends or the login screen depending on whether a user has logged in yet.
         if ($user) {
 
             $data['logout_url'] = $this->facebook->getLogoutUrl();
             $data['friends'] = $this->Facebook_model->getFriends(); 
             $this->load->view('friendsview',$data);
         } else {
-            $permissions = array('scope' => 'read_stream');// gets the right permissions from the user
-	    	//$params = array( 'next' => 'http://localhost/AustinTest/index.php/blog/ajax' );
+            $permissions = array('scope' => 'read_stream', 'friends_videos');// gets the right permissions from the user
 	        $data['login_url'] = $this->facebook->getLoginUrl($permissions);
 	        $this->load->view('loginview',$data);
     }

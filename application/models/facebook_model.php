@@ -9,6 +9,8 @@ public $fql_end='&access_token=';
         parent::__construct();
     }
 
+    //This method is needed because codignitor for some reason
+    //dosen't allow varaible to be set in construct method 
     function initalize($fb){
     	$this->facebook = $fb;
     }
@@ -17,6 +19,8 @@ public $fql_end='&access_token=';
     	return $this->facebook->getuser();
     }
 
+    /*Gets all of the users friends from facebook
+    returns an array of there first/last name and UID */
     function getFriends(){
       $fql_query =  'SELECT first_name, last_name, uid, about_me FROM user WHERE uid in (select uid2 from friend where uid1 = me())';
       $fql_query = urlencode($fql_query);
@@ -26,6 +30,7 @@ public $fql_end='&access_token=';
       return $friends;
     }
 
+    //Gets a specfics friends about me text
     function getBio($first_name, $last_name){
           $fql_query =  'SELECT about_me FROM user WHERE first_name = "'. $first_name . '" and last_name="'. $last_name . '" and uid in (select uid2 from friend where uid1 = me())';
           $fql_query = urlencode($fql_query);
@@ -35,6 +40,8 @@ public $fql_end='&access_token=';
           echo $about_me;   
     }
 
+    /*Gets a friends UID which is important
+    since UID is normally a friends Key on facebooks tables*/
     function getUID($first_name, $last_name){
       $fql_query=  'SELECT uid FROM user WHERE first_name = "'. $first_name . '" and last_name="'. $last_name . '" and uid in (select uid2 from friend where uid1 = me())';
       $fql_query = urlencode($fql_query);
@@ -44,6 +51,7 @@ public $fql_end='&access_token=';
       return $uid;
     } 
 
+    //Gets the number of posts from the user from a certain amount of time
     function getPosts($first_name, $last_name, $button_type){
       switch ($button_type){
         case "Daily":
@@ -68,6 +76,7 @@ public $fql_end='&access_token=';
       
   }
 
+//Gets a users current status update.
   function getStatus($uid){
       $fql_query =  'SELECT message FROM status WHERE source_id = $uid';
       $fql_query = urlencode($fql_query);
