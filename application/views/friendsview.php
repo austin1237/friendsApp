@@ -18,6 +18,7 @@
 
   <body>
       <h3>Your Friends</h3>
+      <h3><a href ="<?php echo $logout_url; ?>">Logout</a></h3>
       <div class="friends">
       <?php
     for ($a = 0; $a < count($friends) - 1;) {
