@@ -5,7 +5,8 @@ class Blog extends CI_Controller {
 	{
 		$fb_config = array(
             'appId'  => '140692572794210',
-            'secret' => '9dbcfc38fd50701693dd8603e7bd558c'
+            'secret' => '9dbcfc38fd50701693dd8603e7bd558c', 
+            'cookie' =>  false
         );
 
         $this->load->library('facebook', $fb_config);
@@ -26,12 +27,12 @@ class Blog extends CI_Controller {
         //shows either friends or the login screen depending on whether a user has logged in yet.
         if ($user) {
 
-            $data['logout_url'] = $this->facebook->getLogoutUrl();
+            $data['logout_url'] = $this->facebook->getLogoutUrl(array('next'=>'http://localhost/AustinTest/index.php/logout'));
             $data['friends'] = $this->Facebook_model->getFriends(); 
             $this->load->view('friendsview',$data);
         } else {
-            $permissions = array('scope' => 'read_stream', 'friends_videos');// gets the right permissions from the user
-	        $data['login_url'] = $this->facebook->getLoginUrl($permissions);
+            //$permissions = array('scope' => 'read_stream', 'friends_videos', 'user_likes', 'friend_likes');// gets the right permissions from the user
+	        $data['login_url'] = $this->facebook->getLoginUrl(array('scope' => 'read_stream, user_likes, friends_likes'));
 	        $this->load->view('loginview',$data);
     }
 	}
