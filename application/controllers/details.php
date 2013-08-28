@@ -15,7 +15,12 @@ class Details extends CI_Controller {
         echo $first_name . $last_name . $img_source . ' ' . $uid;
         $this->setUpModel();
         $status = $this->Details_model->getStatus($uid);
-        echo $status;
+        $ownersLink= $this->Details_model->getOwnersLink($uid);
+        $link = $this->Details_model->getLink($uid);
+        echo '<br>' . ' lastest status ' . $status;
+        echo '<br>' . 'last link posted ' . $ownersLink["url"] . ' comment '. $ownersLink["comment"];
+        echo '<br>' . 'last link liked ' . $link;
+
 
 	}
 

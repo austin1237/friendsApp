@@ -8,9 +8,29 @@ class Details_model extends Facebook_model {
       $fql = file_get_contents($this->fql_start.$fql_query.$this->fql_end . $this->facebook->getAccessToken());
       $status = json_decode($fql, true); 
       $latest = $status['data'][0]['message'];
-      echo  '<br>' . $latest . '<br>';
-      echo "Monthly Status Updates ". count($status['data']);
+      return $latest;
     }
+
+      function getLink($uid){
+        $fql_query =  'SELECT url FROM url_like WHERE user_id = '. $uid;
+        $fql_query = urlencode($fql_query);
+        $fql = file_get_contents($this->fql_start.$fql_query.$this->fql_end . $this->facebook->getAccessToken());
+        $fql = json_decode($fql, true); 
+        $url = $fql['data'][0]['url'];
+        return $url;  
+      }
+
+    function getOwnersLink($uid){
+      $fql_query =  'SELECT  owner_comment, url  FROM link WHERE owner = '. $uid;
+      $fql_query = urlencode($fql_query);
+      $fql = file_get_contents($this->fql_start.$fql_query.$this->fql_end . $this->facebook->getAccessToken());
+      $fql = json_decode($fql, true); 
+      $comment = $fql['data'][0]['owner_comment'];
+      $url = $fql['data'][0]['url'];
+      return array("comment" => $comment, "url" => $url);  
+    }
+
+
 
     //Below is a sample pull from the stream table you need to mess
     // with either the time_created as well as the limit option
